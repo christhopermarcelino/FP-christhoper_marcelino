@@ -6,6 +6,13 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function() {
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Server running'
+    ], 200);
+});
+
 Route::middleware(['auth-jwt', 'api'])->group(function() {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/orders/report', [OrderController::class, 'report']);
