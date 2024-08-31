@@ -22,7 +22,6 @@ class OrderController extends Controller
             data_forget($order, 'user_id');
         });
 
-
         return $this->sendResponse('Orders retrieved successfully', $orders);
     }
 
