@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - default
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "sleep 10 && php artisan migrate --seed && php-fpm"
+
+  db:
+    image: postgres:13
+    container_name: db
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    image: nginx:1.26-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "9000:80"
+    volumes:
+      - .:/var/www
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - default
+    depends_on:
+      - app
+
+networks:
+  default:
+    driver: bridge
