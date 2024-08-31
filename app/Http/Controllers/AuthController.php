@@ -3,25 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        if($validator->fails()) {
-            return $this->sendError("Validation error", $validator->errors(), 400);
-        }
-
-        $credentials = $validator->validated();
+        $credentials = $request->validated();
 
         // get user
         $user = User::where('email', $credentials['email'])->first();
@@ -51,24 +42,14 @@ class AuthController extends Controller
         return $this->sendResponse("Login successful", $response);
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed|min:6',
-            'password_confirmation' => 'required|string',
-        ]);
-
-        if($validator->fails()) {
-            return $this->sendError("Validation error", $validator->errors(), 400);
-        }
-
-        $credentials = $validator->validated();
+        $credentials = $request->validated();
 
         User::create([
             'name' => $credentials['name'],
             'email' => $credentials['email'],
+            'address' => $credentials['address'],
             'password' => Hash::make($credentials['password'])
         ]);
 
