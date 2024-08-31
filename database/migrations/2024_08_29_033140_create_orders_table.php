@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('order_date')->default(now());
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->restrictOnDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->restrictOnDelete('cascade');
 
         });
     }

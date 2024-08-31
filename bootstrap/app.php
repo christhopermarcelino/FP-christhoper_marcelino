@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Middleware\AuthJWTMiddleware;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\JsonResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,5 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (QueryException $e) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Server error'
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        });
     })->create();
