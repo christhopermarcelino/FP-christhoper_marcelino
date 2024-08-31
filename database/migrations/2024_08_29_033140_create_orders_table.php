@@ -17,8 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedInteger('quantity');
             $table->decimal('total_price', 10, 2);
-            $table->string('customer_name');
-            $table->text('customer_address');
             $table->timestamp('order_date')->default(now());
             $table->timestamps();
 
