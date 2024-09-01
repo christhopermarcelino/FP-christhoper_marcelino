@@ -45,7 +45,7 @@ class OrderController extends Controller
             return $this->sendError('Order failed to create', null, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->sendResponse('Order created successfully', $order);
+        return $this->sendResponse('Order created successfully', $order, JsonResponse::HTTP_CREATED);
     }
 
     public function show($id)

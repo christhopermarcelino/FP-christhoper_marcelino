@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
@@ -23,7 +24,7 @@ class CategoryController extends Controller
             return $this->sendError('Category failed to create', null, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->sendResponse('Category created successfully', $category);
+        return $this->sendResponse('Category created successfully', $category, JsonResponse::HTTP_CREATED);
     }
 
     public function show($id)
