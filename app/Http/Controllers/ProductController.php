@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
@@ -30,7 +31,7 @@ class ProductController extends Controller
             return $this->sendError('Product failed to create', null, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->sendResponse('Product created successfully', $product);
+        return $this->sendResponse('Product created successfully', $product, JsonResponse::HTTP_CREATED);
     }
 
     public function show($id)
