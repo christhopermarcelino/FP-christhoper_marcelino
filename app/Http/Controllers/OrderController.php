@@ -56,7 +56,7 @@ class OrderController extends Controller
             return $this->sendError('Order not found', null, 404);
         }
         if($order->user_id != Auth::id()) {
-            return $this->sendError('Unauthorized', null, 401);
+            return $this->sendError('You are not authorized to access this data', null, 401);
         }
 
         $order->customer_name = $order->user->name;
@@ -76,7 +76,7 @@ class OrderController extends Controller
             return $this->sendError('Order not found', null, 404);
         }
         if($order->user_id != Auth::id()) {
-            return $this->sendError('Unauthorized', null, 401);
+            return $this->sendError('You are not authorized to access this data', null, 401);
         }
 
         $product = Product::find($data['product_id']);
@@ -103,7 +103,7 @@ class OrderController extends Controller
             return $this->sendError('Order not found', null, 404);
         }
         if($order->user_id != Auth::id()) {
-            return $this->sendError('Unauthorized', null, 401);
+            return $this->sendError('You are not authorized to access this data', null, 401);
         }
 
         try {
