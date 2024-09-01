@@ -64,6 +64,10 @@ class CategoryController extends Controller
 
         try {
             $category->delete();
+        } catch(QueryException $e) {
+            if($e->getCode() == '23503') {
+                return $this->sendError('Category cannot be deleted because it is linked to other data', null, JsonResponse::HTTP_CONFLICT);
+            }
         } catch(Exception $_) {
             return $this->sendError('Category failed to delete', null, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }

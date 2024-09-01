@@ -74,6 +74,10 @@ class ProductController extends Controller
 
         try {
             $product->delete();
+        } catch(QueryException $e) {
+            if($e->getCode() == '23503') {
+                return $this->sendError('Product cannot be deleted because it is linked to other data', null, JsonResponse::HTTP_CONFLICT);
+            }
         } catch(Exception $_) {
             return $this->sendError('Product failed to delete', null, JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
